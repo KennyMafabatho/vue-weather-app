@@ -1,69 +1,100 @@
 <template>
- <div id="app">
-  <main>
-    <div class="search-box">
-      <input type="text" class="search-bar" placeholder="Search"/>
-    </div>
-    <div class="weather-wrap">
-      <div class="location-container">
-        <div class="city"></div>
-         <div class="date"></div>
+  <div id="app">
+    <main>
+      <div class="search-box">
+        <input type="text" 
+        class="search-bar" 
+        placeholder="Search"
+        v-model="query"
+        v-on="fetchWeather" />
       </div>
-      <div class="weather-container">
-        <div class="temp">70</div>
-        <div class="weather"></div>
+      <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
+        <div class="location-container">
+          <div class="city">{{weather.name}}, {{weather.sys.country}}</div>
+          <div class="date"></div>
+        </div>
+        <div class="weather-container">
+          <div class="temp">{{Math.round(weather.main.temp)}}</div>
+          <div class="weather">{{weather.weather[0].main}}</div>
+        </div>
       </div>
-    </div>
-  </main>
-
- </div>
+    </main>
+  </div>
 </template>
 
 <script>
-
-
 export default {
-  name: 'app',
-  data(){
-    return{
-      api_key: '9cdab6a2749accdc20cb626a655913d8',
-      URL_Base: 'https://api.openweathermap.org/data/2.5/'
+  name: "app",
+  data() {
+    return {
+      api_key: "9cdab6a2749accdc20cb626a655913d8",
+      url_base: "https://api.openweathermap.org/data/2.5/",
+      query: "",
+      weather: "",
+    };
+  },
+  methods:{
+    fetchWeather(e){
+      if(e.key == "Enter"){
+        fetch(`${this.url_base}weather?q=${this.query}&units=metric&APPID=${this.api_key}`)
+          .then(response => {
+            return response.json();
+          }).then(this.setResults)
+      }
+    },
+
+    setResults(results){
+      this.weather = results;
+    },
+    dateBuilder(){
+      
+      let d = new Date();
+      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      let day = days[d.getDay()];
+      let date = d.getDate();
+      let month = months[d.getMonth()];
+      let year = d.getFullYear();
+      return `${day} ${date} ${month} ${year}`;
     }
   }
-}
+};
 </script>
 
 <style>
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-  font-family: 'monsterrat', sans-serif;
-
+body {
+  font-family: "monsterrat", sans-serif;
 }
 
-#app{
-  background-image: url('./assets/cold-bg.jpg');
+#app {
+  background-image: url("./assets/cold-bg.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
 }
 
-main{
+main {
   min-height: 100vh;
   padding: 25px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.75)
+  );
 }
 
-.search-box{
+.search-box {
   width: 100%;
   margin-bottom: 30px;
 }
 
-.search-box .search-bar{
+.search-box .search-bar {
   display: block;
   width: 100%;
   padding: 15px;
@@ -74,20 +105,19 @@ main{
   outline: none;
   background: none;
 
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25) ;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0px 16px 0px 16px;
   transition: 0.4s;
 }
 
-.search-box .search-bar:focus{
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25) ;
+.search-box .search-bar:focus {
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.75);
   border-radius: 16px 0px 16px 0px;
-
 }
 
-.location-container .city{
+.location-container .city {
   color: #fff;
   font-size: 32px;
   font-weight: 500;
@@ -95,7 +125,7 @@ main{
   text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
 }
 
-.location-container .date{
+.location-container .date {
   color: #fff;
   font-size: 20px;
   font-weight: 300;
@@ -103,11 +133,11 @@ main{
   font-style: italic;
 }
 
-.weather-container{
+.weather-container {
   text-align: center;
 }
 
-.weather-container .temp{
+.weather-container .temp {
   display: inline-block;
   padding: 10px 25px;
   color: #fff;
@@ -120,11 +150,11 @@ main{
   box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
-.weather-container .weather{
+.weather-container .weather {
   color: #fff;
-   font-size: 48px;
+  font-size: 48px;
   font-weight: 700;
   font-style: italic;
-   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 </style>
