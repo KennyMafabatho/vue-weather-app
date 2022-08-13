@@ -4,6 +4,16 @@
     <div class="search-box">
       <input type="text" class="search-bar" placeholder="Search"/>
     </div>
+    <div class="weather-wrap">
+      <div class="location-container">
+        <div class="city"></div>
+         <div class="date"></div>
+      </div>
+      <div class="weather-container">
+        <div class="temp">70</div>
+        <div class="weather"></div>
+      </div>
+    </div>
   </main>
 
  </div>
@@ -16,7 +26,8 @@ export default {
   name: 'app',
   data(){
     return{
-      api_key: '9cdab6a2749accdc20cb626a655913d8'
+      api_key: '9cdab6a2749accdc20cb626a655913d8',
+      URL_Base: 'https://api.openweathermap.org/data/2.5/'
     }
   }
 }
@@ -74,5 +85,46 @@ main{
   background-color: rgba(255, 255, 255, 0.75);
   border-radius: 16px 0px 16px 0px;
 
+}
+
+.location-container .city{
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.location-container .date{
+  color: #fff;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  font-style: italic;
+}
+
+.weather-container{
+  text-align: center;
+}
+
+.weather-container .temp{
+  display: inline-block;
+  padding: 10px 25px;
+  color: #fff;
+  font-size: 102px;
+  font-weight: 900;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  margin: 30px;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.weather-container .weather{
+  color: #fff;
+   font-size: 48px;
+  font-weight: 700;
+  font-style: italic;
+   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 </style>
